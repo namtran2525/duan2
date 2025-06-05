@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Text to Speech App</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #container { display: flex; gap: 20px; }
+        textarea { width: 400px; height: 200px; }
+    </style>
+</head>
+<body>
+<h1>Text to Speech</h1>
+<div id="container">
+    <form id="tts-form" method="post" action="/synthesize">
+        <textarea name="text" placeholder="Enter text here"></textarea><br>
+        <label>Language:
+            <select name="voice">
+                <option value="en-US">US English</option>
+                <option value="en-GB">UK English</option>
+            </select>
+        </label>
+        <label>Voice:
+            <select name="gender">
+                <option value="NEUTRAL">Neutral</option>
+                <option value="FEMALE">Female</option>
+                <option value="MALE">Male</option>
+            </select>
+        </label>
+        <label>Pitch:
+            <input type="range" name="pitch" min="-20" max="20" value="0">
+        </label>
+        <label>Speed:
+            <input type="number" name="speed" step="0.1" min="0.5" max="2" value="1">
+        </label>
+        <button type="submit">Speak</button>
+    </form>
+    <audio id="player" controls style="margin-top: 1.5em;"></audio>
+</div>
+<script>
+    const form = document.getElementById('tts-form');
+    const player = document.getElementById('player');
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const response = await fetch('/synthesize', { method: 'POST', body: formData });
+        const blob = await response.blob();
+        player.src = URL.createObjectURL(blob);
+        player.play();
+    });
+</script>
+</body>
+</html>

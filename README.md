@@ -1,11 +1,12 @@
 # Text to Speech App
 
-This repository provides a small command‑line utility that converts text to
-speech using the Google Text‑to‑Speech REST API.
+This repository provides a small command‑line utility and a simple web
+application that convert text to speech using the Google Text‑to‑Speech REST
+API.
 
 ## Setup
 
-1. Install the required dependency:
+1. Install the required dependencies:
 
 ```bash
 pip install -r requirements.txt
@@ -33,4 +34,25 @@ export GOOGLE_TTS_API_KEY="YOUR_API_KEY"
 python text_to_speech.py "Hello world" output.mp3
 ```
 
+Optional parameters can be provided for the voice language code, gender, pitch
+and speed:
+
+```bash
+python text_to_speech.py "Hello" output.mp3 $GOOGLE_TTS_API_KEY en-US FEMALE 0 1.2
+```
+
 The synthesized speech will be saved to the specified MP3 file.
+
+### Web application
+
+You can also run a small Flask web application that provides a text box and
+audio player. Start the server with:
+
+```bash
+export GOOGLE_TTS_API_KEY="YOUR_API_KEY"
+python app.py
+```
+
+Then open `http://localhost:5000` in your browser. Paste the text you want to
+synthesize, choose the voice, pitch (emotion) and speed, and click **Speak** to
+listen to the generated audio.
