@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ứng Dụng Cơ Thể Con Người</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Ứng Dụng Cơ Thể Con Người</h1>
+            <p>Nhập tên bệnh để xem vị trí đau trên cơ thể</p>
+        </header>
+
+        <div class="controls">
+            <div class="search-box">
+                <input type="text" id="diseaseInput" placeholder="Nhập tên bệnh (vd: đau đầu, đau tim, đau dạ dày...)">
+                <button id="searchBtn">Tìm kiếm</button>
+                <button id="clearBtn">Xóa</button>
+            </div>
+
+            <div class="view-modes">
+                <h3>Chế độ xem:</h3>
+                <div class="mode-buttons">
+                    <button class="mode-btn active" data-mode="normal">Bình thường</button>
+                    <button class="mode-btn" data-mode="skeleton">Xương</button>
+                    <button class="mode-btn" data-mode="muscle">Cơ bắp</button>
+                    <button class="mode-btn" data-mode="vascular">Mạch máu</button>
+                    <button class="mode-btn" data-mode="transparent">Trong suốt</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="body-container">
+            <svg id="humanBody" viewBox="0 0 400 800" xmlns="http://www.w3.org/2000/svg">
+                <!-- Normal body layer -->
+                <g id="normalLayer" class="body-layer active">
+                    <!-- Head -->
+                    <ellipse id="head" cx="200" cy="80" rx="60" ry="70" class="body-part" data-part="head"/>
+
+                    <!-- Neck -->
+                    <rect id="neck" x="180" y="140" width="40" height="30" class="body-part" data-part="neck"/>
+
+                    <!-- Torso -->
+                    <ellipse id="chest" cx="200" cy="230" rx="80" ry="80" class="body-part" data-part="chest"/>
+                    <ellipse id="abdomen" cx="200" cy="340" rx="75" ry="60" class="body-part" data-part="abdomen"/>
+
+                    <!-- Arms -->
+                    <ellipse id="leftShoulder" cx="130" cy="190" rx="30" ry="25" class="body-part" data-part="shoulder"/>
+                    <rect id="leftUpperArm" x="100" y="210" width="35" height="100" rx="15" class="body-part" data-part="arm"/>
+                    <rect id="leftForearm" x="100" y="310" width="30" height="90" rx="12" class="body-part" data-part="forearm"/>
+                    <ellipse id="leftHand" cx="115" cy="420" rx="20" ry="25" class="body-part" data-part="hand"/>
+
+                    <ellipse id="rightShoulder" cx="270" cy="190" rx="30" ry="25" class="body-part" data-part="shoulder"/>
+                    <rect id="rightUpperArm" x="265" y="210" width="35" height="100" rx="15" class="body-part" data-part="arm"/>
+                    <rect id="rightForearm" x="270" y="310" width="30" height="90" rx="12" class="body-part" data-part="forearm"/>
+                    <ellipse id="rightHand" cx="285" cy="420" rx="20" ry="25" class="body-part" data-part="hand"/>
+
+                    <!-- Legs -->
+                    <rect id="leftThigh" x="160" y="390" width="40" height="150" rx="15" class="body-part" data-part="thigh"/>
+                    <rect id="leftCalf" x="160" y="540" width="35" height="140" rx="12" class="body-part" data-part="calf"/>
+                    <ellipse id="leftFoot" cx="177" cy="700" rx="25" ry="20" class="body-part" data-part="foot"/>
+
+                    <rect id="rightThigh" x="200" y="390" width="40" height="150" rx="15" class="body-part" data-part="thigh"/>
+                    <rect id="rightCalf" x="205" y="540" width="35" height="140" rx="12" class="body-part" data-part="calf"/>
+                    <ellipse id="rightFoot" cx="222" cy="700" rx="25" ry="20" class="body-part" data-part="foot"/>
+
+                    <!-- Internal organs (simplified) -->
+                    <ellipse id="heart" cx="190" cy="220" rx="25" ry="30" class="organ" data-part="heart"/>
+                    <ellipse id="stomach" cx="200" cy="300" rx="35" ry="40" class="organ" data-part="stomach"/>
+                    <ellipse id="liver" cx="230" cy="280" rx="30" ry="35" class="organ" data-part="liver"/>
+                    <rect id="intestines" x="170" y="340" width="60" height="50" rx="10" class="organ" data-part="intestines"/>
+                    <ellipse id="leftKidney" cx="170" cy="310" rx="15" ry="25" class="organ" data-part="kidney"/>
+                    <ellipse id="rightKidney" cx="230" cy="310" rx="15" ry="25" class="organ" data-part="kidney"/>
+                    <ellipse id="leftLung" cx="170" cy="210" rx="25" ry="40" class="organ" data-part="lung"/>
+                    <ellipse id="rightLung" cx="230" cy="210" rx="25" ry="40" class="organ" data-part="lung"/>
+                </g>
+
+                <!-- Skeleton layer -->
+                <g id="skeletonLayer" class="body-layer">
+                    <!-- Skull -->
+                    <ellipse cx="200" cy="70" rx="50" ry="60" class="bone" stroke-width="3"/>
+                    <circle cx="180" cy="65" rx="8" ry="10" class="bone-detail"/>
+                    <circle cx="220" cy="65" rx="8" ry="10" class="bone-detail"/>
+
+                    <!-- Spine -->
+                    <line x1="200" y1="130" x2="200" y2="390" class="bone" stroke-width="8"/>
+
+                    <!-- Ribcage -->
+                    <ellipse cx="200" cy="220" rx="70" ry="70" class="bone" stroke-width="3" fill="none"/>
+                    <path d="M 140 190 Q 200 200 260 190" class="bone" stroke-width="2" fill="none"/>
+                    <path d="M 140 210 Q 200 220 260 210" class="bone" stroke-width="2" fill="none"/>
+                    <path d="M 140 230 Q 200 240 260 230" class="bone" stroke-width="2" fill="none"/>
+                    <path d="M 140 250 Q 200 260 260 250" class="bone" stroke-width="2" fill="none"/>
+
+                    <!-- Pelvis -->
+                    <ellipse cx="200" cy="370" rx="60" ry="30" class="bone" stroke-width="3"/>
+
+                    <!-- Arms -->
+                    <line x1="130" y1="180" x2="110" y2="310" class="bone" stroke-width="6"/>
+                    <line x1="110" y1="310" x2="115" y2="410" class="bone" stroke-width="5"/>
+
+                    <line x1="270" y1="180" x2="290" y2="310" class="bone" stroke-width="6"/>
+                    <line x1="290" y1="310" x2="285" y2="410" class="bone" stroke-width="5"/>
+
+                    <!-- Legs -->
+                    <line x1="180" y1="390" x2="177" y2="540" class="bone" stroke-width="7"/>
+                    <line x1="177" y1="540" x2="177" y2="680" class="bone" stroke-width="6"/>
+
+                    <line x1="220" y1="390" x2="222" y2="540" class="bone" stroke-width="7"/>
+                    <line x1="222" y1="540" x2="222" y2="680" class="bone" stroke-width="6"/>
+                </g>
+
+                <!-- Muscle layer -->
+                <g id="muscleLayer" class="body-layer">
+                    <!-- Head muscles -->
+                    <ellipse cx="200" cy="80" rx="58" ry="68" class="muscle"/>
+
+                    <!-- Neck muscles -->
+                    <rect x="182" y="142" width="36" height="28" class="muscle"/>
+
+                    <!-- Chest muscles (pectorals) -->
+                    <ellipse cx="170" cy="220" rx="35" ry="40" class="muscle"/>
+                    <ellipse cx="230" cy="220" rx="35" ry="40" class="muscle"/>
+
+                    <!-- Abs -->
+                    <rect x="175" y="270" width="20" height="30" rx="5" class="muscle"/>
+                    <rect x="205" y="270" width="20" height="30" rx="5" class="muscle"/>
+                    <rect x="175" y="305" width="20" height="30" rx="5" class="muscle"/>
+                    <rect x="205" y="305" width="20" height="30" rx="5" class="muscle"/>
+                    <rect x="175" y="340" width="20" height="30" rx="5" class="muscle"/>
+                    <rect x="205" y="340" width="20" height="30" rx="5" class="muscle"/>
+
+                    <!-- Arm muscles (biceps/triceps) -->
+                    <ellipse cx="115" cy="250" rx="18" ry="45" class="muscle"/>
+                    <ellipse cx="115" cy="340" rx="15" ry="40" class="muscle"/>
+
+                    <ellipse cx="285" cy="250" rx="18" ry="45" class="muscle"/>
+                    <ellipse cx="285" cy="340" rx="15" ry="40" class="muscle"/>
+
+                    <!-- Leg muscles (quadriceps/calves) -->
+                    <ellipse cx="177" cy="450" rx="20" ry="55" class="muscle"/>
+                    <ellipse cx="177" cy="590" rx="17" ry="50" class="muscle"/>
+
+                    <ellipse cx="222" cy="450" rx="20" ry="55" class="muscle"/>
+                    <ellipse cx="222" cy="590" rx="17" ry="50" class="muscle"/>
+                </g>
+
+                <!-- Vascular layer -->
+                <g id="vascularLayer" class="body-layer">
+                    <!-- Heart (central) -->
+                    <ellipse cx="195" cy="220" rx="20" ry="25" class="blood-vessel major"/>
+
+                    <!-- Major arteries -->
+                    <path d="M 195 245 L 195 370" class="blood-vessel major" stroke-width="8"/>
+                    <path d="M 195 195 L 195 145" class="blood-vessel major" stroke-width="6"/>
+
+                    <!-- Arms vessels -->
+                    <path d="M 180 210 L 135 200 L 120 310 L 115 410" class="blood-vessel" stroke-width="4"/>
+                    <path d="M 210 210 L 265 200 L 280 310 L 285 410" class="blood-vessel" stroke-width="4"/>
+
+                    <!-- Legs vessels -->
+                    <path d="M 185 370 L 177 540 L 177 680" class="blood-vessel" stroke-width="5"/>
+                    <path d="M 205 370 L 222 540 L 222 680" class="blood-vessel" stroke-width="5"/>
+
+                    <!-- Smaller vessels (capillaries) -->
+                    <path d="M 195 220 L 170 210" class="blood-vessel minor" stroke-width="2"/>
+                    <path d="M 195 220 L 230 210" class="blood-vessel minor" stroke-width="2"/>
+                    <path d="M 195 300 L 170 310" class="blood-vessel minor" stroke-width="2"/>
+                    <path d="M 195 300 L 230 310" class="blood-vessel minor" stroke-width="2"/>
+
+                    <!-- Brain vessels -->
+                    <circle cx="200" cy="80" r="40" class="blood-vessel minor" stroke-width="2" fill="none"/>
+                    <path d="M 180 70 Q 200 60 220 70" class="blood-vessel minor" stroke-width="2"/>
+                    <path d="M 180 90 Q 200 80 220 90" class="blood-vessel minor" stroke-width="2"/>
+                </g>
+
+                <!-- Transparent layer -->
+                <g id="transparentLayer" class="body-layer">
+                    <!-- Outline only -->
+                    <ellipse cx="200" cy="80" rx="60" ry="70" class="transparent-outline"/>
+                    <rect x="180" y="140" width="40" height="30" class="transparent-outline"/>
+                    <ellipse cx="200" cy="230" rx="80" ry="80" class="transparent-outline"/>
+                    <ellipse cx="200" cy="340" rx="75" ry="60" class="transparent-outline"/>
+
+                    <!-- Arms outline -->
+                    <ellipse cx="130" cy="190" rx="30" ry="25" class="transparent-outline"/>
+                    <rect x="100" y="210" width="35" height="100" rx="15" class="transparent-outline"/>
+                    <rect x="100" y="310" width="30" height="90" rx="12" class="transparent-outline"/>
+                    <ellipse cx="115" cy="420" rx="20" ry="25" class="transparent-outline"/>
+
+                    <ellipse cx="270" cy="190" rx="30" ry="25" class="transparent-outline"/>
+                    <rect x="265" y="210" width="35" height="100" rx="15" class="transparent-outline"/>
+                    <rect x="270" y="310" width="30" height="90" rx="12" class="transparent-outline"/>
+                    <ellipse cx="285" cy="420" rx="20" ry="25" class="transparent-outline"/>
+
+                    <!-- Legs outline -->
+                    <rect x="160" y="390" width="40" height="150" rx="15" class="transparent-outline"/>
+                    <rect x="160" y="540" width="35" height="140" rx="12" class="transparent-outline"/>
+                    <ellipse cx="177" cy="700" rx="25" ry="20" class="transparent-outline"/>
+
+                    <rect x="200" y="390" width="40" height="150" rx="15" class="transparent-outline"/>
+                    <rect x="205" y="540" width="35" height="140" rx="12" class="transparent-outline"/>
+                    <ellipse cx="222" cy="700" rx="25" ry="20" class="transparent-outline"/>
+
+                    <!-- Internal organs visible -->
+                    <ellipse cx="190" cy="220" rx="25" ry="30" class="transparent-organ" data-part="heart"/>
+                    <ellipse cx="200" cy="300" rx="35" ry="40" class="transparent-organ" data-part="stomach"/>
+                    <ellipse cx="230" cy="280" rx="30" ry="35" class="transparent-organ" data-part="liver"/>
+                    <rect x="170" y="340" width="60" height="50" rx="10" class="transparent-organ" data-part="intestines"/>
+                    <ellipse cx="170" cy="310" rx="15" ry="25" class="transparent-organ" data-part="kidney"/>
+                    <ellipse cx="230" cy="310" rx="15" ry="25" class="transparent-organ" data-part="kidney"/>
+                    <ellipse cx="170" cy="210" rx="25" ry="40" class="transparent-organ" data-part="lung"/>
+                    <ellipse cx="230" cy="210" rx="25" ry="40" class="transparent-organ" data-part="lung"/>
+                </g>
+            </svg>
+        </div>
+
+        <div id="diseaseInfo" class="disease-info">
+            <h3>Thông tin bệnh</h3>
+            <div id="diseaseDetails"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

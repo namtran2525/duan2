@@ -1,0 +1,348 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    padding: 30px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 3px solid #667eea;
+}
+
+header h1 {
+    color: #333;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+header p {
+    color: #666;
+    font-size: 1.1em;
+}
+
+.controls {
+    margin-bottom: 30px;
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#diseaseInput {
+    flex: 1;
+    padding: 15px;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    transition: border-color 0.3s;
+}
+
+#diseaseInput:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: bold;
+}
+
+#searchBtn {
+    background: #667eea;
+    color: white;
+}
+
+#searchBtn:hover {
+    background: #5568d3;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+#clearBtn {
+    background: #f44336;
+    color: white;
+}
+
+#clearBtn:hover {
+    background: #da190b;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(244, 67, 54, 0.4);
+}
+
+.view-modes {
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.view-modes h3 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.mode-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.mode-btn {
+    background: white;
+    color: #333;
+    border: 2px solid #ddd;
+    padding: 12px 20px;
+    flex: 1;
+    min-width: 120px;
+}
+
+.mode-btn:hover {
+    border-color: #667eea;
+    color: #667eea;
+    transform: translateY(-2px);
+}
+
+.mode-btn.active {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.body-container {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 15px;
+}
+
+#humanBody {
+    max-width: 400px;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.1));
+}
+
+/* Body layers */
+.body-layer {
+    display: none;
+}
+
+.body-layer.active {
+    display: block;
+}
+
+/* Normal body parts */
+.body-part {
+    fill: #fdbcb4;
+    stroke: #333;
+    stroke-width: 2;
+    transition: all 0.3s;
+}
+
+.body-part:hover {
+    fill: #fca89c;
+    cursor: pointer;
+}
+
+.organ {
+    fill: #ff9999;
+    stroke: #cc0000;
+    stroke-width: 1.5;
+    opacity: 0.7;
+    transition: all 0.3s;
+}
+
+.organ:hover {
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+/* Skeleton */
+.bone {
+    fill: #e8e8e8;
+    stroke: #999;
+    stroke-width: 3;
+}
+
+.bone-detail {
+    fill: #333;
+}
+
+/* Muscle */
+.muscle {
+    fill: #d67373;
+    stroke: #8b0000;
+    stroke-width: 1.5;
+    opacity: 0.8;
+}
+
+/* Vascular */
+.blood-vessel {
+    fill: none;
+    stroke: #cc0000;
+    stroke-width: 4;
+    opacity: 0.8;
+}
+
+.blood-vessel.major {
+    stroke: #990000;
+    stroke-width: 6;
+    opacity: 0.9;
+}
+
+.blood-vessel.minor {
+    stroke: #ff6666;
+    stroke-width: 2;
+    opacity: 0.6;
+}
+
+/* Transparent layer */
+.transparent-outline {
+    fill: rgba(253, 188, 180, 0.2);
+    stroke: #667eea;
+    stroke-width: 2;
+    stroke-dasharray: 5, 5;
+}
+
+.transparent-organ {
+    fill: rgba(255, 153, 153, 0.4);
+    stroke: #cc0000;
+    stroke-width: 2;
+    opacity: 0.8;
+    transition: all 0.3s;
+}
+
+.transparent-organ:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+/* Highlighted (pain) areas */
+.highlighted {
+    fill: #ff0000 !important;
+    stroke: #cc0000 !important;
+    stroke-width: 3 !important;
+    opacity: 0.8 !important;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.8;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+}
+
+/* Disease info */
+.disease-info {
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.disease-info h3 {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+}
+
+#diseaseDetails {
+    color: #555;
+    line-height: 1.8;
+}
+
+#diseaseDetails.empty {
+    color: #999;
+    font-style: italic;
+}
+
+.disease-list {
+    list-style: none;
+    padding: 0;
+}
+
+.disease-list li {
+    padding: 10px;
+    margin: 5px 0;
+    background: white;
+    border-radius: 5px;
+    border-left: 4px solid #667eea;
+}
+
+.disease-list li strong {
+    color: #667eea;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    header h1 {
+        font-size: 1.8em;
+    }
+
+    .search-box {
+        flex-direction: column;
+    }
+
+    .mode-buttons {
+        flex-direction: column;
+    }
+
+    .mode-btn {
+        min-width: 100%;
+    }
+
+    #humanBody {
+        max-width: 300px;
+    }
+}
+
+/* Loading animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
